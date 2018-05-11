@@ -3,6 +3,7 @@ package com.firemaples.keyboardtest;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -32,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         view_functionBlock = findViewById(R.id.view_functionBlock);
 
         bt_attach.setOnClickListener(onClickListener);
-        et_message.setOnClickListener(onClickListener);
+//        et_message.setOnClickListener(onClickListener);
+        et_message.setOnTouchListener(messageEditTextOnTouchListener);
 
 //        et_message.requestFocus();
 //        inputMethodManager.showSoftInput(et_message, InputMethodManager.SHOW_FORCED);
@@ -50,12 +52,24 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private View.OnTouchListener messageEditTextOnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(final View v, final MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                showFuncBlock(false);
+            }
+            return false;
+        }
+    };
+
     private void showFuncBlock(boolean show) {
         if (show) {
+            //Show function view
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
             closeKeyboard();
             view_functionBlock.setVisibility(View.VISIBLE);
         } else {
+            //Close function view
             view_functionBlock.postDelayed(new Runnable() {
                 @Override
                 public void run() {
